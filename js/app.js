@@ -81,8 +81,58 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);    
 }
 
+Player.prototype.handleInput = function(key) {
+    switch(key) {
+        case 'left':
+            this.x = this.x - 51;
+            if (this.x < -1) {
+                this.x = -1;
+            }
+            break;
+        case 'up':
+            this.y = this.y - 42;
+            if (this.y < -16) {
+                this.y = -16;
+            }
+            break;
+        case 'right':
+            this.x = this.x + 51;
+            if (this.x > 407) {
+                this.x = 407;
+            }   
+            break;
+        case 'down':
+            this.y = this.y + 42;
+            if (this.y > 362) {
+                this.y = 362;
+            }    
+        default:
+            break;
+    }
+    console.log(this.x, this.y)
+
 // Now instantiate your objects.
+
+var top1 = new SwiftEnemy (250, 26, currentlevel);
+var top2 = new SwifEnemy (-250, 26, currentlevel);
+var mid1 = new MidEnemy (100, 68, currentlevel);
+var mid2 = new MidEnemy (-200, 68, currentlevel);
+var mid3 = new MidEnemy (-500, 68, currentlevel);
+var bot1 = new PokyEnemy (250, 110, currentlevel);
+var bot2 = new PokyEnemy (-250, 110, currentlevel);
+
+var top21 = new SwiftEnemy (400, 194, currentlevel);
+var top22 = new SwiftEnemy (-100, 194, currentlevel);
+var mid21 = new MidEnemy (250, 236, currentlevel);
+var mid22 = new MidEnemy (-50, 236, currentlevel);
+var mid23 = new MidEnemy (-350, 236, currentlevel);
+var bot21 = new PokyEnemy (200, 278, currentlevel);
+var bot22 = new PokyEnemy (-300, 278, currentlevel);
+
 // Place all enemy objects in an array called allEnemies
+
+var allEnemies = [top1, top2, mid1, mid2, mid3, bot1, bot2, top21, top22, mid21, mid22, mid23, bot21, bot22];
+
 // Place the player object in a variable called player
 
 
