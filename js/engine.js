@@ -23,11 +23,12 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        animate = false,
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    doc.getElementById('canvasDiv').appendChild(canvas);// Placing canvas inside container to align with start/reset button and player character radio button group
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -39,6 +40,8 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
+        
+    
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
@@ -56,15 +59,17 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
-    };
+       if (global.animate) win.requestAnimationFrame(main);
+        
+    }
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
     function init() {
-        reset();
+        buildAll();
+        //reset();
         lastTime = Date.now();
         main();
     }
@@ -91,6 +96,7 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+        pClock.drawClock(new Date() - pClock.startTime);
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -161,6 +167,16 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        console.log("engine reset enabled");
+        
+        global.animate = true;
+        allEnemies.forEach(function(enemy) {
+            enemy.reset();
+        });
+        player.reset();
+        pClock.reset();
+
+        main();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -172,7 +188,11 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
@@ -181,4 +201,6 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.animate = animate;
+    global.reset = reset;
 })(this);
